@@ -12,6 +12,8 @@
 
 	public function view($slug = NULL){
 		$data['post'] = $this->post_model->get_posts($slug);
+		$post_id = $data['post']['id'];
+		$data['comments'] = $this->comment_model->get_comments($post_id);
 
 		if(empty($data['post'])){
 			show_404();
@@ -41,8 +43,8 @@
 			$config['upload_path'] = './assets/css/images/posts';
 			$config['allowed_types'] = 'gif|jpg|png';
 			$config['max_size'] = '2048';
-			$config['max_width'] = '500';
-			$config['max_height'] = '500';
+			$config['max_width'] = '2000';
+			$config['max_height'] = '2000';
 
 			$this->load->library('upload', $config);
 
@@ -55,12 +57,17 @@
 			}
 
 			$this->post_model->create_post($post_image);
+
+			// Set message
+			$this->session->set_flashdata('post_created', 'Your post have been created');
 			redirect('posts');
 		}
 	}
 
 	public function delete($id){
 		$this->post_model->delete_post($id);
+
+		$this->session->set_flashdata('post_deleted', 'Your post has been deleted');
 		redirect('posts');
 	}
 
@@ -81,6 +88,8 @@
 
 	public function uptade(){
 		$this->post_model->uptade_post();
+		// Set message
+		$this->session->set_flashdata('post_updated', 'Your post has been updated');
 		redirect('posts');
 	}
 }
