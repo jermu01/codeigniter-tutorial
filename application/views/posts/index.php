@@ -10,4 +10,9 @@
     <?php echo word_limiter ($post['body'], 60); ?>
     <br><br>
     <p><a class="btn btn-default" href="<?php echo site_url('/posts/' .$post['slug']); ?>">Read More</a></p>
+    </div>
+	</div>
 <?php endforeach; ?>
+<div class="pagination-links">
+		<?php echo $this->pagination->create_links(); ?>
+</div>
